@@ -17,8 +17,13 @@ body, html {
     text-align: center;
     border: 3px solid red;
 }
+#options {
+
+}
 button {
+    margin: 5px;
     font-size: 35px;
+    font-family: 'Times New Roman', Times, serif;
     padding: 2px 80px;
     color: teal;
     background-color: purple;
@@ -50,13 +55,13 @@ h1 {
     background-color: black;
 }
 p {
-    -webkit-text-stroke: 1px red;
-    color: black;
+
+    color: teal;
     font-size: 20px;
 }
 h2 {
-    -webkit-text-stroke: 1px red;
-    color: black;
+
+    color: teal;
     font-size: 35px;
 }
 .clearDiv {
