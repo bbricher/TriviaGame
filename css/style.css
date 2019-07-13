@@ -1,3 +1,67 @@
-body {
-    background-image: url("https://m.media-amazon.com/images/M/MV5BMjMyNTkyMTg1Ml5BMl5BanBnXkFtZTgwMjAzOTQ5ODE@._V1_SY1000_CR0,0,1498,1000_AL_.jpg");
+body, html {
+    height: 100%;
+} 
+.bg { 
+    background-image: url(https://s3.amazonaws.com/stranger-things/stranger-trivia.png);
+    height: 100%; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#container {
+    display: inline-block;
+    background-color: black;
+    margin: 3% 10% 3% 10%;
+    height: 90%;
+    width: 80%;
+    text-align: center;
+    border: 3px solid red;
+}
+button {
+    font-size: 35px;
+    padding: 2px 80px;
+    color: teal;
+    background-color: purple;
+    border-color: yellow;
+}
+button:hover {
+    background-color: black;
+    border: none;
+    font-family: 'Times New Roman', Times, serif;
+    -webkit-text-stroke: 1px red;
+    color: black;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+    opacity: 20%;
+    -webkit-transform:rotate(-180deg);
+    -moz-transform:rotate(-180deg);
+    -o-transform:rotate(-180deg);
+    transform:rotate(-180deg);
+    -ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
+    filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
+}
+h1 {
+    display: inline-block;
+    -webkit-text-stroke: 2px red;
+    text-decoration: underline overline;
+    text-decoration-style: solid 1px;
+    color: black;
+    font-size: 70px;
+    background-color: black;
+}
+p {
+    -webkit-text-stroke: 1px red;
+    color: black;
+    font-size: 20px;
+}
+h2 {
+    -webkit-text-stroke: 1px red;
+    color: black;
+    font-size: 35px;
+}
+.clearDiv {
+    display: inline-block;
+}
+.hideDiv {
+    display: inline-block;
 }
