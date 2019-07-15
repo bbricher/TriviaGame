@@ -5,7 +5,7 @@ var wrong = 0;
 var unanswered = 0;
 
 var questionTime = 15;
-var timeRemaining = 15;
+var timeRemaining = 3;
 
 var q1 = {
     question : "Who gets stuck in the upside-down?",
@@ -48,44 +48,86 @@ console.log(correct);
 // -----------------------------------------------------------------------------------------------------------
 var lastQuestionIndex = objectList.length-1;
 var runningQuestionIndex = 0;
-var TIMER = "";
+var TIMER;
 $("#startGame").on("click", startGame );
 
 function startGame() {
     $("#startGame").hide();
-    timerCountDown();
-    TIMER = setInterval(timerCountDown, 1000);
+    $("#timeCount").show();
     renderQuestion();
-    $("#options").show();
+    // TIMER = setInterval(timerCountDown, 1000);
+
+
 }
 
 function renderQuestion() {
+    timeRemaining = 3;
+    $("#timer").text(timeRemaining);
     let q = objectList[runningQuestionIndex];
-    $("#question").append("<h2>" + q.question + "</h2>");
-    $("#option1").text(q.options[0]);
-    $("#option2").text(q.options[1]);
-    $("#option3").text(q.options[2]);
-    $("#option4").text(q.options[3]);  
+    $("#question").html("<h2>" + q.question + "</h2>");
+    for (var i = 0; i < q.options.length; i++) {
+        $("#option" + i).text(q.options[i]);
+        $("#option" + i).attr("value", q.options[i])
+    }
+    $(".clearDiv").show();
+    $("#endTime").hide();
+    TIMER = setInterval(timerCountDown, 1000);
+
 }
 
 function timerCountDown() {
-    if (timeRemaining <= 15) {
+    // if (timeRemaining <= 15) {
+    //     $("#timeCount").show();
+    //     $("#timer").text(timeRemaining);
+    //     timeRemaining--;
+    // } else{
+    //     timeRemaining=15;
+    //     if(runningQuestionIndex < lastQuestionIndex){
+    //         checkAnswer();
+    //         runningQuestionIndex++;
+    //         renderQuestion();
+    //     } else{ clearInterval(TIMER);
+
+    //     }
+    // }
+
+    if (timeRemaining === 0) {
+        clearInterval(TIMER);
+        console.log(runningQuestionIndex);
+        wrongAnswer();
+        runningQuestionIndex++;
+        setTimeout(renderQuestion, 2000);
+
+
+    } else {
+        timeRemaining--;
         $("#timeCount").show();
         $("#timer").text(timeRemaining);
-        timeRemaining--;
-    } else{
-        timeRemaining=15;
-        if(runningQuestionIndex < lastQuestionIndex){
-            runningQuestionIndex++;
-            renderQuestion();
-        } else{ clearInterval(TIMER);
 
-        }
     }
 }
+function wrongAnswer() {
+    $("#endTime").empty();
+    var wrongAnswerTextH2 = $("<h2>").html("OOOOOPPS!")
+    var actualAnswerPtag = $("<p>").html("The Correct Answer is: " + objectList[runningQuestionIndex].answer);
+    $(".clearDiv").hide();
+    $("#endTime").append(wrongAnswerTextH2, actualAnswerPtag);
+    $("#endTime").show();
+}
+function correctAnswer() {
+    $("#endTime").empty();
+    var correctAnswerTextH2 = $("<h2>").html("Correct!")
+    var actualAnswerPtag = $("<p>").html("The Correct Answer is: " + objectList[runningQuestionIndex].answer);
+    $(".clearDiv").hide();
+    $("#endTime").append(correctAnswerTextH2, actualAnswerPtag);
+    $("#endTime").show();
+}
+
+// $("#options").on("click", ".options", checkAnswer);
+
+// var answer = [$("#option1").on("click"), $("#option2").on("click"), $("#option3").on("click"), $("#option4").on("click")];
 
 function checkAnswer(answer){
-    answer = $("#options").on("click");
     if(objectList[runningQuestionIndex].correct == answer){
         correct++;
     } else {
@@ -99,6 +141,19 @@ function checkAnswer(answer){
 //  showScore
     }
 }
+function evaluateAnswer() {
+    
+    var clickedValue = $(this).attr('value');
+    if(clickedValue === objectList[runningQuestionIndex].answer) {
+        console.log("correct");
+        // runningQuestionIndex++;
+        // correctAnswer();
+        // setTimeout(renderQuestion, 2000); ---> 
+    } else{
+        console.log("incorrect");
+    }
+}
+$(document).on("click", ".option", evaluateAnswer);
 
 // img.html("<img src=" + q.imgSrc + ">");
 // -----------------------------------------------------------------------------------------------------------
@@ -160,7 +215,6 @@ function checkAnswer(answer){
 //      $().append("<h2>Out of time!!<h2>");
 //      $().append("The Correct Answer was: " + rightAnswer)
 //      $().append("<img src=>");
-//      win++;
 // }
 // create if statements for winning and losing
 // BONUS: create a spoiler alert action before the last 3 questions
