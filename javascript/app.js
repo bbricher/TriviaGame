@@ -5,13 +5,13 @@ var wrong = 0;
 var unanswered = 0;
 
 var questionTime = 15;
-var timeRemaining = 3;
+var timeRemaining = 15;
 
 var q1 = {
     question : "Who gets stuck in the upside-down?",
     options : ["Will", "Mike", "Eleven", "Lucas"],
     answer : "Will",
-    imgSrc : "https://media0.giphy.com/media/3o6ZtjOHwbvJcjHBq8/100.webp?cid=790b76115d294fae546c463445e80744&rid=100.webp",
+    imgSrc : "https://media3.giphy.com/media/cdyKC6wstMP124Dbvy/200w.webp?cid=790b76115d38d56b355657482ebe09e0&rid=200w.webp",
 } 
 
 var q2 = {
@@ -61,7 +61,7 @@ function startGame() {
 }
 
 function renderQuestion() {
-    timeRemaining = 3;
+    timeRemaining = 15;
     $("#timer").text(timeRemaining);
     let q = objectList[runningQuestionIndex];
     $("#question").html("<h2>" + q.question + "</h2>");
@@ -94,32 +94,33 @@ function timerCountDown() {
     if (timeRemaining === 0) {
         clearInterval(TIMER);
         console.log(runningQuestionIndex);
+        $("#timeCount").hide();
         wrongAnswer();
+        unanswered++;
         runningQuestionIndex++;
         setTimeout(renderQuestion, 2000);
-
-
     } else {
         timeRemaining--;
         $("#timeCount").show();
         $("#timer").text(timeRemaining);
-
     }
 }
 function wrongAnswer() {
     $("#endTime").empty();
     var wrongAnswerTextH2 = $("<h2>").html("OOOOOPPS!")
     var actualAnswerPtag = $("<p>").html("The Correct Answer is: " + objectList[runningQuestionIndex].answer);
+    // var actualAnswerImg = $("<img src='" + imgSrc + "'>");
     $(".clearDiv").hide();
-    $("#endTime").append(wrongAnswerTextH2, actualAnswerPtag);
+    $("#endTime").append(wrongAnswerTextH2, actualAnswerPtag); // , actualAnswerImg
     $("#endTime").show();
 }
 function correctAnswer() {
     $("#endTime").empty();
     var correctAnswerTextH2 = $("<h2>").html("Correct!")
     var actualAnswerPtag = $("<p>").html("The Correct Answer is: " + objectList[runningQuestionIndex].answer);
+    // var actualAnswerImg = $("<img src='" + imgSrc + "'>");
     $(".clearDiv").hide();
-    $("#endTime").append(correctAnswerTextH2, actualAnswerPtag);
+    $("#endTime").append(correctAnswerTextH2, actualAnswerPtag); // , actualAnswerImg
     $("#endTime").show();
 }
 
@@ -133,11 +134,22 @@ function checkAnswer(answer){
     } else {
         wrong++;
     }
-    if (runningQuestionIndex < lastQuestionIndex) {
-        count = 15;
+    if (runningQuestionIndex < lastQuetionIndex) {
+        timeRemaining = 15;
         runningQuestionIndex++;
+        $("#timeCount").show();
         renderQuestion();
-    } else{ clearInterval(TIMER)
+    } else { 
+        clearInterval(TIMER)
+        $("#timeCount").hide();
+        $(".clearDiv").empty();
+        $("#question").html("<h2>Score:</h2>");
+        $("#option").html("<p>").addclass("correct");
+        $("#option").html("<p>").addclass("wrong");
+        $("#option").html("<p>").addclass("unanswered");
+        $(".correct").text("Correct: " + correct);
+        $(".wrong").text("Wrong: " + wrong);
+        $(".unanswered").text("Unanswered: " + unanswered);
 //  showScore
     }
 }
@@ -146,11 +158,18 @@ function evaluateAnswer() {
     var clickedValue = $(this).attr('value');
     if(clickedValue === objectList[runningQuestionIndex].answer) {
         console.log("correct");
-        // runningQuestionIndex++;
-        // correctAnswer();
-        // setTimeout(renderQuestion, 2000); ---> 
+        $("#timeCount").hide();
+        correctAnswer();
+        clearInterval(TIMER)
+        runningQuestionIndex++;
+        setTimeout(renderQuestion, 2000);        
     } else{
+        wrongAnswer();
         console.log("incorrect");
+        $("#timeCount").hide();
+        clearInterval(TIMER)
+        runningQuestionIndex++;
+        setTimeout(renderQuestion, 2000);
     }
 }
 $(document).on("click", ".option", evaluateAnswer);
