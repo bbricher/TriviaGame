@@ -54,10 +54,11 @@ console.log(correct);
 var lastQuestionIndex = objectList.length-1;
 var runningQuestionIndex = 0;
 var TIMER;
-$("#startGame").on("click", startGame );
+$(".start").on("click", startGame );
 
 function startGame() {
     $("#startGame").hide();
+    $("#startGame2").hide();
     $("#timeCount").show();
     renderQuestion();
     // TIMER = setInterval(timerCountDown, 1000);
@@ -104,7 +105,10 @@ function timerCountDown() {
         unanswered++;
         runningQuestionIndex++;
         setTimeout(renderQuestion, 2000);
-    } else {
+    } else if (runningQuestionIndex === 6) {
+        console.log("yo")
+    }
+    else {
         timeRemaining--;
         $("#timeCount").show();
         $("#timer").text(timeRemaining);
@@ -140,11 +144,13 @@ function correctAnswer() {
 
 function checkAnswer(answer){
     
-    if (runningQuestionIndex < lastQuetionIndex) {
+    if (runningQuestionIndex < 6) {
         timeRemaining = 15;
         runningQuestionIndex++;
         $("#timeCount").show();
         renderQuestion();
+    } else if (runningQuestionIndex === 6) {
+        console.log("yo");
     } else { 
         clearInterval(TIMER)
         $("#timeCount").hide();
@@ -168,14 +174,49 @@ function evaluateAnswer() {
         correctAnswer();
         clearInterval(TIMER)
         runningQuestionIndex++;
-        setTimeout(renderQuestion, 2000);        
-    } else{
+        if (runningQuestionIndex === 6) {
+            $("#endTime").empty();
+            var showStart = $("#startGame2").show();
+            var space = $("<br>")
+            var totalScore = $("<h1>").html("Total Score:")
+            var showScore = $("<h2>").html("Correct Answers: " + correct + " Wrong Answer: " + wrong + " Unanswered: " + unanswered)
+            var prompt = $("<h2>").html("Click Start to Play Again!")
+            runningQuestionIndex = 0;
+            correct = 0;
+            wrong = 0;
+            unanswered = 0;
+            $("#endTime").append(totalScore, showScore, prompt, space, showStart); // 
+            $("#endTime").show();
+
+            console.log("yo it's 6")
+        } else {
+            setTimeout(renderQuestion, 2000);
+        }       
+    } 
+    else{
         wrongAnswer();
         console.log("incorrect");
         $("#timeCount").hide();
         clearInterval(TIMER)
         runningQuestionIndex++;
-        setTimeout(renderQuestion, 2000);
+        if (runningQuestionIndex === 6) {
+            $("#endTime").empty();
+            var showStart = $("#startGame2").show();
+            var space = $("<br>")
+            var totalScore = $("<h1>").html("Total Score:")
+            var showScore = $("<h2>").html("Correct Answers: " + correct + " Wrong Answer: " + wrong + " Unanswered: " + unanswered)
+            var prompt = $("<h2>").html("Click Start to Play Again!")
+            runningQuestionIndex = 0;
+            correct = 0;
+            wrong = 0;
+            unanswered = 0;
+            $("#endTime").append(totalScore, showScore, prompt, space, showStart); // 
+            $("#endTime").show();
+
+            console.log("yo it's 6")
+        } else {
+            setTimeout(renderQuestion, 2000);
+        }
     }
 }
 $(document).on("click", ".option", evaluateAnswer);
